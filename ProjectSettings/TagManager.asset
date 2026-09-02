@@ -4,18 +4,23 @@
 TagManager:
   serializedVersion: 3
   tags:
+<<<<<<< HEAD
   - Tomato
   - Cheese
   - Shrooms
   - Pepperoni
+=======
+  - Ground
+  - Pizza
+>>>>>>> Marco
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Player
   - Water
   - UI
-  - 
+  - Hand
   - 
   - 
   - 
