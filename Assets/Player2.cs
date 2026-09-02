@@ -34,7 +34,7 @@ public class TopPlayer : MonoBehaviour
             GrabItem();
         }
 
-        if (Input.GetMouseButtonDown(1) && itemHeld != -1)
+        if (Input.GetMouseButtonDown(1) && itemHeld != -1 && cooldown <= 0)
         {
             ItemDrop();
         }
