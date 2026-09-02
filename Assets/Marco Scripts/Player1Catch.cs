@@ -6,9 +6,10 @@ public class Player1Catch : MonoBehaviour
     private Rigidbody2D pizzaRb;
     private float _rotation;
     [SerializeField] private float rotationForce;
+    [SerializeField] private float throwForce;
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.gameObject.CompareTag("Pizza"))
+        if (other.gameObject.CompareTag("Pizza") && pizzaRb == null)
         {
             pizzaRb = other.gameObject.GetComponent<Rigidbody2D>();
             Debug.Log("Pizza!");
@@ -26,5 +27,20 @@ public class Player1Catch : MonoBehaviour
         rotation.z -= (_rotation * rotationForce) * Time.fixedDeltaTime;
         transform.localEulerAngles = rotation;
     }
-    
+
+    private void Throw()
+    {
+        if (Input.GetKeyDown(KeyCode.Space) && pizzaRb != null)
+        {
+            pizzaRb.bodyType = RigidbodyType2D.Dynamic;
+            pizzaRb.AddForce(transform.up * throwForce, ForceMode2D.Impulse);
+            pizzaRb.gameObject.transform.SetParent(null);
+            pizzaRb = null;
+        }
+    }
+
+    private void Update()
+    {
+        Throw();
+    }
 }
