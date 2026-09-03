@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 294516444880521647}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Tray
   m_TagString: Untagged
   m_Icon: {fileID: -5397416234189338067, guid: 0000000000000000d000000000000000, type: 0}
@@ -44,7 +44,7 @@ GameObject:
   - component: {fileID: 4581852463840049295}
   - component: {fileID: 1466665924117940103}
   - component: {fileID: 5554822053114357540}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Player2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -134,14 +134,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 23411145cd6de43408b1b4ff6d0baea4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 0
+  maxSpeed: 2.75
+  springStrength: 18
+  damping: 0
   ingredients:
+  - {fileID: 4746106118028717424, guid: efcf927440788224c8ad3628e16afbbb, type: 3}
   - {fileID: 4746106118028717424, guid: 9e24d6d26340f5744aabbe655eff1aa0, type: 3}
-  - {fileID: 4746106118028717424, guid: 9e24d6d26340f5744aabbe655eff1aa0, type: 3}
-  - {fileID: 4746106118028717424, guid: 9e24d6d26340f5744aabbe655eff1aa0, type: 3}
-  - {fileID: 4746106118028717424, guid: 9e24d6d26340f5744aabbe655eff1aa0, type: 3}
+  - {fileID: 4746106118028717424, guid: 25aa93cf302d3624d8ae4e5fb4975c0e, type: 3}
+  - {fileID: 4746106118028717424, guid: 165db9a55a56b02438fb4c956dd9b6ff, type: 3}
   cooldown: 1
   spawn: {fileID: 1088801315362195897}
+  maxThrowForce: 3
+  throwChargeSpeed: 2
 --- !u!50 &1466665924117940103
 Rigidbody2D:
   serializedVersion: 5
@@ -168,7 +172,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 6
 --- !u!70 &5554822053114357540
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
