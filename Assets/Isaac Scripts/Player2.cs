@@ -12,6 +12,9 @@ public class TopPlayer : MonoBehaviour
     [SerializeField] private float maxThrowForce = 10f;
     [SerializeField] private float throwChargeSpeed = 10f;
 
+    // Cuánto movimiento del jugador hereda el ingrediente
+    [SerializeField] private float throwMovementInfluence = 1f;
+
     private int itemHeld = -1;
     private GameObject currentIngredient;
     private Vector2 spawnPos;
@@ -55,12 +58,12 @@ public class TopPlayer : MonoBehaviour
         {
             GrabItem();
         }
-        
+
         if (Input.GetMouseButtonDown(1) && itemHeld != -1 && cooldown <= 0)
         {
             throwForce = 0f;
         }
-        
+
         if (Input.GetMouseButton(1) && itemHeld != -1 && cooldown <= 0)
         {
             throwForce += throwChargeSpeed * Time.deltaTime;
@@ -70,7 +73,7 @@ public class TopPlayer : MonoBehaviour
                 throwForce = maxThrowForce;
             }
         }
-        
+
         if (Input.GetMouseButtonUp(1) && itemHeld != -1 && cooldown <= 0)
         {
             ItemDrop();
@@ -83,20 +86,27 @@ public class TopPlayer : MonoBehaviour
 
         float targetX = mousePosition.x;
         float currentX = rb.position.x;
-        
+
         float distance = targetX - currentX;
-        
+
         float springForce = distance * springStrength;
-        
+
         float dampingForce = -rb.linearVelocity.x * damping;
-        
+
         float totalForce = springForce + dampingForce;
 
         rb.AddForce(Vector2.right * totalForce);
-        
-        float clampedVelocityX = Mathf.Clamp(rb.linearVelocity.x, -maxSpeed, maxSpeed);
 
-        rb.linearVelocity = new Vector2(clampedVelocityX, rb.linearVelocity.y);
+        float clampedVelocityX = Mathf.Clamp(
+            rb.linearVelocity.x,
+            -maxSpeed,
+            maxSpeed
+        );
+
+        rb.linearVelocity = new Vector2(
+            clampedVelocityX,
+            rb.linearVelocity.y
+        );
     }
 
     private void GrabItem()
@@ -128,13 +138,30 @@ public class TopPlayer : MonoBehaviour
 
     private void ItemDrop()
     {
-        GameObject thrownIngredient = Instantiate(ingredients[itemHeld], spawnPos, Quaternion.identity );
+        GameObject thrownIngredient = Instantiate(
+            ingredients[itemHeld],
+            spawnPos,
+            Quaternion.identity
+        );
 
         Rigidbody2D ingredientRb = thrownIngredient.GetComponent<Rigidbody2D>();
 
         if (ingredientRb != null)
         {
-            ingredientRb.AddForce(Vector2.up * throwForce, ForceMode2D.Impulse);
+            // El ingrediente hereda la velocidad horizontal del jugador
+            float inheritedVelocityX =
+                rb.linearVelocity.x * throwMovementInfluence;
+
+            ingredientRb.linearVelocity = new Vector2(
+                inheritedVelocityX,
+                ingredientRb.linearVelocity.y
+            );
+
+            // Fuerza del lanzamiento hacia arriba
+            ingredientRb.AddForce(
+                Vector2.up * throwForce,
+                ForceMode2D.Impulse
+            );
         }
 
         itemHeld = -1;
@@ -144,7 +171,10 @@ public class TopPlayer : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.CompareTag("Tomato") || other.CompareTag("Cheese") || other.CompareTag("Shrooms") || other.CompareTag("Pepperoni"))
+        if (other.CompareTag("Tomato") ||
+            other.CompareTag("Cheese") ||
+            other.CompareTag("Shrooms") ||
+            other.CompareTag("Pepperoni"))
         {
             currentIngredient = other.gameObject;
         }
